@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pipfile = "*"
+requests = "*"
+pyyaml = "*"
+pyspark = "==3.1.2"
+psycopg2-binary = "==2.9.5"
+python-dateutil = "*"
+
+[dev-packages]
+pipfile = "*"
+requests = "*"
+pyyaml = "*"
+
+[requires]
+python_version = "3.8"

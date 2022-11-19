@@ -1,0 +1,6 @@
+.idea
+*.lock
+*.iml
+.DS_Store
+spark-warehouse
+*.pyc

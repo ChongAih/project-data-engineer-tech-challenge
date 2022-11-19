@@ -1,0 +1,125 @@
+spark_process:
+  successful_application:
+    # Spark input source setting
+    input:
+      src: "csv"
+      src_path: "application"
+      csv_separator: ","
+      view_name: "application"
+    # SparkSQL processing query
+    query: |
+      WITH data AS (
+        SELECT 
+          REGEXP_REPLACE(
+            CAST(name AS STRING), '^.*\\. ', ''
+          ) AS name,
+          CAST(email AS STRING) AS email,
+          COALESCE(
+            TO_DATE(date_of_birth, 'yyyy-MM-dd'),
+            TO_DATE(date_of_birth, 'dd-MM-yyyy'),
+            TO_DATE(date_of_birth, 'yyyy-dd-MM'),
+            TO_DATE(date_of_birth, 'MM-dd-yyyy'),
+            TO_DATE(date_of_birth, 'yyyy/MM/dd'),
+            TO_DATE(date_of_birth, 'dd/MM/yyyy'),
+            TO_DATE(date_of_birth, 'yyyy/dd/MM'),
+            TO_DATE(date_of_birth, 'MM/dd/yyyy')
+          ) AS date_of_birth,
+          REPLACE(
+            REPLACE(
+              CAST(mobile_no AS STRING), ' ', ''
+            ), '-', ''
+          ) AS mobile_no  
+        FROM 
+          ${view_name}
+      ),
+      filtered_data AS (
+        SELECT 
+          SPLIT(name, ' ')[0] AS first_name,
+          SPLIT(name, ' ')[1] AS last_name,
+          DATE_FORMAT(date_of_birth, 'yyyyMMdd') AS date_of_birth,
+          mobile_no,
+          email
+        FROM 
+          data
+        WHERE CHAR_LENGTH(mobile_no) = 8
+          AND email RLIKE '.+@[a-zA-Z-.]+.(net|com)'
+          AND FLOOR(MONTHS_BETWEEN('2022-01-01', date_of_birth) / 12) >= 18
+          AND name != ''
+      )
+      SELECT
+        first_name,
+        last_name,
+        date_of_birth,
+        mobile_no,
+        email,
+        1 AS above_18,
+        CONCAT_WS(
+          '_', 
+          last_name, 
+          SUBSTRING(SHA2(CAST(date_of_birth AS STRING), 256), 0, 5)
+        ) AS membership_id
+      FROM filtered_data
+    # Spark output dest setting
+    output:
+      dest: "csv"
+      dest_path: "successful_application"
+  unsuccessful_application:
+    # Spark input source setting
+    input:
+      src: "csv"
+      src_path: "application"
+      csv_separator: ","
+      view_name: "application"
+    # SparkSQL processing query
+    query: |
+      WITH data AS (
+        SELECT
+          REGEXP_REPLACE(
+            CAST(name AS STRING), '^.*\\. ', ''
+          ) AS name,
+          CAST(email AS STRING) AS email,
+          COALESCE(
+            TO_DATE(date_of_birth, 'yyyy-MM-dd'),
+            TO_DATE(date_of_birth, 'dd-MM-yyyy'),
+            TO_DATE(date_of_birth, 'yyyy-dd-MM'),
+            TO_DATE(date_of_birth, 'MM-dd-yyyy'),
+            TO_DATE(date_of_birth, 'yyyy/MM/dd'),
+            TO_DATE(date_of_birth, 'dd/MM/yyyy'),
+            TO_DATE(date_of_birth, 'yyyy/dd/MM'),
+            TO_DATE(date_of_birth, 'MM/dd/yyyy')
+          ) AS date_of_birth,
+          REPLACE(
+            REPLACE(
+              CAST(mobile_no AS STRING), ' ', ''
+            ), '-', ''
+          ) AS mobile_no
+        FROM
+          ${view_name}
+      ),
+      filtered_data AS (
+        SELECT
+          SPLIT(name, ' ')[0] AS first_name,
+          SPLIT(name, ' ')[1] AS last_name,
+          DATE_FORMAT(date_of_birth, 'yyyyMMdd') AS date_of_birth,
+          mobile_no,
+          email
+        FROM
+          data
+        WHERE CHAR_LENGTH(mobile_no) != 8
+          OR NOT email RLIKE '.+@[a-zA-Z-.]+.(net|com)'
+          OR FLOOR(MONTHS_BETWEEN('2022-01-01', date_of_birth) / 12) < 18
+          OR name == '' 
+          OR name IS NULL
+      )
+      SELECT
+        *
+      FROM filtered_data
+    # Spark output dest setting
+    output:
+      dest: "csv"
+      dest_path: "unsuccessful_application"
+
+# Spark job configuration
+parallelism: 1
+spark_driver_memory: "1g"
+  
