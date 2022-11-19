@@ -24,8 +24,6 @@ if [ "$command" = "start" ]; then
   echo && echo "==================================== RUNNING DOCKER CONTAINER ====================================" && echo
 
   docker container run \
-    -v "${PWD}"/resource:/data_pipeline/resource \
-    -v "${PWD}"/conf:/data_pipeline/conf \
     -v "${PWD}"/section1:/data_pipeline/section1 \
     --rm --name $PIPELINE_CONTAINER_NAME -p 80:4040 -d "$PIPELINE_IMAGE_NAME":"$PIPELINE_TAG_NAME"
 

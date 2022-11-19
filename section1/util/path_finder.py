@@ -3,13 +3,13 @@ import os
 
 def get_config_folder_path():
     os.chdir(os.path.dirname(__file__))
-    os.chdir('../..')
+    os.chdir('..')
     return os.path.join(os.getcwd(), "conf")
 
 
 def get_resource_path():
     os.chdir(os.path.dirname(__file__))
-    os.chdir('../..')
+    os.chdir('..')
     return os.path.join(os.getcwd(), "resource")
 
 

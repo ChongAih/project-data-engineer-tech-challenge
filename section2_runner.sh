@@ -3,7 +3,7 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # Read Docker config and export for docker-compose usage
-. "$SCRIPT_DIR"/conf/section2_postgresql.ini
+. "$SCRIPT_DIR"/section2/conf/section2_postgresql.ini
 
 export POSTGRES_USER
 export POSTGRES_PASSWORD

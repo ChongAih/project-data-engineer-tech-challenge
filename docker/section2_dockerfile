@@ -10,4 +10,4 @@ ENV POSTGRES_DB=$POSTGRES_DB POSTGRES_USER=$POSTGRES_USER POSTGRES_PASSWORD=$POS
 EXPOSE ${POSTGRES_PORT}
 
 # Copy SQL that create tables to the entrypoint
-COPY ../conf/section2_create.sql /docker-entrypoint-initdb.d/
+COPY ../section2/conf/section2_create.sql /docker-entrypoint-initdb.d/
