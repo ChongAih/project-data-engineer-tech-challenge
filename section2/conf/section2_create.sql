@@ -35,6 +35,8 @@ CREATE TABLE IF NOT EXISTS item (
 CREATE TABLE IF NOT EXISTS orders (
     order_id varchar(255) NOT NULL PRIMARY KEY,
     status varchar(255), -- new, paid, complete, delivering, abandoned
+    order_level_discount serial,
+    shipping varchar(255),
     create_time serial,
     update_time serial,
     membership_id varchar(255),
@@ -46,6 +48,7 @@ CREATE TABLE IF NOT EXISTS orders (
 CREATE TABLE IF NOT EXISTS orders_item (
     order_item_id varchar(255) NOT NULL PRIMARY KEY,
     quantity serial,
+    item_level_discount serial,
     create_time serial,
     update_time serial,
     order_id varchar(255),
