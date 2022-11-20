@@ -53,7 +53,7 @@ if [ "$command" = "start" ]; then
     --rm --name "$PIPELINE_CONTAINER_NAME" -p 80:4040 -d "$PIPELINE_IMAGE_NAME":"$PIPELINE_TAG_NAME"
 
   docker container run \
-    --name "$GF_CONTAINER_NAME" \
+    --rm --name "$GF_CONTAINER_NAME" \
     -p "$GF_EXTERNAL_PORT":"$GF_PORT" \
     --network "$NETWORK" \
     -e GF_INSTALL_PLUGINS="$GF_INSTALL_PLUGINS" \
@@ -62,7 +62,6 @@ if [ "$command" = "start" ]; then
     -e GF_USERS_ALLOW_SIGN_UP="$GF_USERS_ALLOW_SIGN_UP" \
     -e GF_DASHBOARDS_JSON_ENABLED="$GF_DASHBOARDS_JSON_ENABLED" \
     -d "$GF_IMAGE_TAG_NAME"
-    # #    --rm --name "$GF_CONTAINER_NAME" \
 
   echo && echo "==================================== INGEST P1Y COVID-19 DATA ====================================" && echo
 
