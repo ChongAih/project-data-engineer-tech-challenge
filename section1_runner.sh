@@ -2,10 +2,8 @@
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-PIPELINE_TAG_NAME=latest
-PIPELINE_IMAGE_NAME=data_engineer_tech_challenge
-PIPELINE_CONTAINER_NAME=$PIPELINE_IMAGE_NAME
-
+# Read Docker config and export for docker-compose usage
+. "$SCRIPT_DIR"/section1/conf/section1_python.ini
 
 command="$1"
 
@@ -25,9 +23,9 @@ if [ "$command" = "start" ]; then
 
   docker container run \
     -v "${PWD}"/section1:/data_pipeline/section1 \
-    --rm --name $PIPELINE_CONTAINER_NAME -p 80:4040 -d "$PIPELINE_IMAGE_NAME":"$PIPELINE_TAG_NAME"
+    --rm --name "$PIPELINE_CONTAINER_NAME" -p 80:4040 -d "$PIPELINE_IMAGE_NAME":"$PIPELINE_TAG_NAME"
 
-  # docker container exec data_engineer_tech_challenge bash -c 'python3 section1_manage.py --task-config section1_process.yaml'
+  # docker container exec section1_python bash -c 'python3 section1_manage.py --task-config section1_process.yaml'
 
 elif [ "$command" = "stop" ]; then
 
