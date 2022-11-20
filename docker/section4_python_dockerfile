@@ -1,0 +1,36 @@
+FROM ubuntu:20.04
+
+# Install Python pip & pipenv
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends python3 python3-pip python3-setuptools python3-wheel && \
+    pip install pipenv && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install OpenJDK-8
+RUN apt-get update && \
+    apt-get install -y openjdk-8-jdk && \
+    apt-get install -y ant && \
+    apt-get clean;
+RUN apt-get update && \
+    apt-get install ca-certificates-java && \
+    apt-get clean && \
+    update-ca-certificates -f;
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
+RUN export JAVA_HOME
+
+ARG DEPLOYMENT_ENV="docker"
+ENV DEPLOYMENT_ENV=$DEPLOYMENT_ENV
+
+EXPOSE 4040
+
+# Create and copy content to directory
+WORKDIR /data_pipeline
+ADD ../section4 /data_pipeline/section4
+COPY ../Pipfile .
+COPY ../Pipfile.lock .
+COPY ../section4_manage.py .
+
+# Install all packages into the system python
+RUN pipenv install --system --deploy --ignore-pipfile
+
+ENTRYPOINT ["sleep", "infinity"]

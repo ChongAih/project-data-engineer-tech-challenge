@@ -1,0 +1,13 @@
+FROM postgres:9.6.6
+
+# Include configurable environment arguments
+ARG POSTGRES_USER="postgres"
+ARG POSTGRES_PASSWORD="my_password"
+ARG POSTGRES_DB="my_database"
+ENV POSTGRES_DB=$POSTGRES_DB POSTGRES_USER=$POSTGRES_USER POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+
+# Expose docker port
+EXPOSE ${POSTGRES_PORT}
+
+# Copy SQL that create tables to the entrypoint
+COPY ../section4/conf/section4_create.sql /docker-entrypoint-initdb.d/

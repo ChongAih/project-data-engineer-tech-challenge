@@ -1,0 +1,200 @@
+{
+  "dashboard": {
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "Covid Monitoring system",
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "hideControls": false,
+    "links": [],
+    "refresh": false,
+    "rows": [
+      {
+        "collapse": false,
+        "height": 592,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "postgres-datasource",
+            "description": "Covid Cases Monitoring System",
+            "fill": 1,
+            "hideTimeOverride": false,
+            "id": 2,
+            "legend": {
+              "alignAsTable": true,
+              "avg": true,
+              "current": true,
+              "hideEmpty": false,
+              "hideZero": false,
+              "max": true,
+              "min": true,
+              "rightSide": false,
+              "show": true,
+              "sideWidth": null,
+              "total": false,
+              "values": true
+            },
+            "lines": false,
+            "linewidth": 1,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 3,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+              {
+                "alias": "num_cases",
+                "fill": 3,
+                "legend": true,
+                "lines": true,
+                "pointradius": 2,
+                "points": true
+              },
+              {
+                "alias": "num_p7d_avg_cases",
+                "bars": true,
+                "legend": true
+              }
+            ],
+            "spaceLength": 10,
+            "span": 12,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "alias": "",
+                "format": "time_series",
+                "rawSql": "SELECT\r\n  $__time(measurement_date), num_cases\r\nFROM  \r\n  covid\r\nWHERE\r\n  $__timeFilter(measurement_date) \r\n  and country = 'SG' ",
+                "refId": "A"
+              },
+              {
+                "alias": "",
+                "format": "time_series",
+                "rawSql": "SELECT\n  $__time(measurement_date), num_p7d_avg_cases\nFROM  \n  covid\nWHERE\n  $__timeFilter(measurement_date) \n  and country = 'SG' \n",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Covid Cases Monitoring System",
+            "tooltip": {
+              "shared": false,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "Num of Cases",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "decimals": null,
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": false
+              }
+            ]
+          }
+        ],
+        "repeat": null,
+        "repeatIteration": null,
+        "repeatRowId": null,
+        "showTitle": false,
+        "title": "Dashboard Row",
+        "titleSize": "h6"
+      },
+      {
+        "collapse": false,
+        "height": 464,
+        "panels": [],
+        "repeat": null,
+        "repeatIteration": null,
+        "repeatRowId": null,
+        "showTitle": false,
+        "title": "Dashboard Row",
+        "titleSize": "h6"
+      },
+      {
+        "collapse": false,
+        "height": 355,
+        "panels": [],
+        "repeat": null,
+        "repeatIteration": null,
+        "repeatRowId": null,
+        "showTitle": false,
+        "title": "Dashboard Row",
+        "titleSize": "h6"
+      }
+    ],
+    "schemaVersion": 14,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-1y",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "time_options": [
+        "5m",
+        "15m",
+        "1h",
+        "6h",
+        "12h",
+        "24h",
+        "2d",
+        "7d",
+        "30d"
+      ]
+    },
+    "timezone": "",
+    "title": "Covid"
+  },
+  "overwrite": true
+}

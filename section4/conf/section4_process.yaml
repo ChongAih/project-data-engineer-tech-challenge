@@ -1,0 +1,5 @@
+table: "covid"
+table_columns: [ "country", "measurement_date", "num_cases", "num_p7d_avg_cases" ]
+unique_columns: [ "country", "measurement_date" ]
+interval: 365
+country: "singapore"
