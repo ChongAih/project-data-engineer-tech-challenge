@@ -18,21 +18,21 @@ if [ "$command" = "start" ]; then
 
   echo && echo "==================================== BUILDING DOCKER IMAGE ====================================" && echo
 
-#  # Remove the old image
-#  docker image ls | grep -q "$PIPELINE_IMAGE_NAME" && docker image rm -f "$PIPELINE_IMAGE_NAME":"$PIPELINE_TAG_NAME"
-#  docker image ls | grep -q "$POSTGRES_IMAGE_NAME" && docker image rm -f "$POSTGRES_IMAGE_NAME":"$POSTGRES_TAG_NAME"
-#
-#  # Build a new image based on the Dockerfile
-#  docker build \
-#    --build-arg DEPLOYMENT_ENV="docker" \
-#    -t "$PIPELINE_IMAGE_NAME":"$PIPELINE_TAG_NAME" -f "$SCRIPT_DIR"/docker/section4_python_dockerfile .
-#
-#  # Build a new image based on the Dockerfile
-#  docker build \
-#    --build-arg POSTGRES_USER="$POSTGRES_USER" \
-#    --build-arg POSTGRES_PASSWORD="$POSTGRES_PASSWORD" \
-#    --build-arg POSTGRES_DB="$POSTGRES_DB" \
-#    -t "$POSTGRES_IMAGE_NAME":"$POSTGRES_TAG_NAME" -f "$SCRIPT_DIR"/docker/section4_postgres_dockerfile .
+  # Remove the old image
+  docker image ls | grep -q "$PIPELINE_IMAGE_NAME" && docker image rm -f "$PIPELINE_IMAGE_NAME":"$PIPELINE_TAG_NAME"
+  docker image ls | grep -q "$POSTGRES_IMAGE_NAME" && docker image rm -f "$POSTGRES_IMAGE_NAME":"$POSTGRES_TAG_NAME"
+
+  # Build a new image based on the Dockerfile
+  docker build \
+    --build-arg DEPLOYMENT_ENV="docker" \
+    -t "$PIPELINE_IMAGE_NAME":"$PIPELINE_TAG_NAME" -f "$SCRIPT_DIR"/docker/section4_python_dockerfile .
+
+  # Build a new image based on the Dockerfile
+  docker build \
+    --build-arg POSTGRES_USER="$POSTGRES_USER" \
+    --build-arg POSTGRES_PASSWORD="$POSTGRES_PASSWORD" \
+    --build-arg POSTGRES_DB="$POSTGRES_DB" \
+    -t "$POSTGRES_IMAGE_NAME":"$POSTGRES_TAG_NAME" -f "$SCRIPT_DIR"/docker/section4_postgres_dockerfile .
 
   echo && echo "==================================== CREATING DOCKER NETWORK ====================================" && echo
 
