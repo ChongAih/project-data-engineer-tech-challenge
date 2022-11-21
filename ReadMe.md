@@ -157,7 +157,11 @@ quick process. In this project, Spark is adopted due to the following:
 * View can be created from different sources and SQL can be easily defined to process the data
 * Process execution plan is available which can be used to easily identify logic needs to be optimized
 
-Since the job is relatively simple and has no other dependencies, it is scheduled by a cronjob for an hourly basis
+Since the job is relatively simple and has no other dependencies, it is scheduled by a cronjob for an hourly basis.
+
+Moving forward, if there is some new dependencies, the job can be scheduled and monitored on Airflow also as
+demonstrated.
+![alt text](section1/section1_dummy_pipeline.png)
 
 ### 3.2. Command
 
@@ -203,6 +207,18 @@ The path to the output of the processing pipeline is as follows:
 
 ```
 section1/resource/dest
+```
+
+To start a dockerized Airflow webserver container (`http://localhost:8080/admin/`) and run a dummy pipeline
+
+```
+cd section1/airflow && sh start_airflow.sh start
+```
+
+To stop the Airflow container
+
+```
+sh start_airflow.sh stop
 ```
 
 ## 4. Section 2: Databases
