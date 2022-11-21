@@ -1,5 +1,6 @@
 import os
 import sys
+from datetime import datetime
 from string import Template
 
 from pyspark.sql import DataFrame
@@ -13,14 +14,20 @@ from section1.util.path_finder import get_resource_src_path, get_resource_dest_p
 def execute_process_task(process_config: dict, sql_kwargs: dict):
     spark_op: SparkOperator = None
     try:
+        logger.info(
+            f"*********************** Starting pipeline {datetime.now().date().strftime('%Y-%m-%d')} "
+            f"***********************")
         # Get Spark operators
         spark_op = SparkOperator(
             **get_spark_configuration(task_config=process_config)
         )
         # Execute process logic
         create_view_process_df(process_config=process_config, spark_op=spark_op, sql_kwargs=sql_kwargs)
+        logger.info(f"*********************** SUCCESS *****************************")
+        sys.exit(0)
     except Exception as e:
-        logger.info(f"Exception occurred during execute_process_task - {e}", exc_info=True)
+        logger.error(f"Exception occurred during execute_process_task - {e}", exc_info=True)
+        logger.error(f"***********************  ERROR  *****************************")
         sys.exit(1)
     finally:
         if spark_op:

@@ -157,6 +157,8 @@ quick process. In this project, Spark is adopted due to the following:
 * View can be created from different sources and SQL can be easily defined to process the data
 * Process execution plan is available which can be used to easily identify logic needs to be optimized
 
+Since the job is relatively simple and has no other dependencies, it is scheduled by a cronjob for an hourly basis
+
 ### 3.2. Command
 
 Go to project root folder first.
@@ -170,6 +172,25 @@ To test run the pipeline
 
 ```
 docker container exec section1_python bash -c 'python3 section1_manage.py --task-config section1_process.yaml'
+```
+
+To view the hourly cronjob
+
+```
+docker container exec -it section1_python bash
+
+# In the container
+crontab -l
+```
+
+```
+0 * * * * python3 section1_manage.py --task-config section1_process.yaml >> section1/log/data_pipeline.log 2>&1
+```
+
+To view the hourly cronjob log
+
+```
+cat section1/log/data_pipeline.log
 ```
 
 To take down the Docker containers

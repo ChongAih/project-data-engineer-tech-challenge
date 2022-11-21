@@ -94,8 +94,8 @@ class SparkOperator:
                 logger.info(error_message)
             if df:
                 df.createOrReplaceTempView(view_name)
-                logger.info("Showing dataframe schema")
-                df.printSchema()
+                # logger.info("Showing dataframe schema")
+                # df.printSchema()
         except Exception as e:
             error = True
             error_message = f"Exception occurred during spark session create_view - '{e}'"
@@ -109,8 +109,8 @@ class SparkOperator:
         try:
             logger.info(f"Spark query: \n{query}")
             df = self.spark.sql(query)
-            logger.info("Showing dataframe schema")
-            df.printSchema()
+            # logger.info("Showing dataframe schema")
+            # df.printSchema()
             return df
         except Exception as e:
             error = True

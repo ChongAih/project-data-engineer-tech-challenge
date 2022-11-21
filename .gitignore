@@ -4,3 +4,4 @@
 .DS_Store
 spark-warehouse
 *.pyc
+*.log
